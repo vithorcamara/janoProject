@@ -14,37 +14,36 @@ export default function App() {
   const [send, setSend] = useState(false);
 
   const fetchQuestion = async () => {
-    setError(""); // Limpa mensagens de erro anteriores
-    setResponse(""); // Limpa resposta anterior
-    setLoading(true); // Inicia o carregamento
+    setError("");
+    setResponse(""); // Limpa a resposta anterior
+    setLoading(true);
     try {
       const res = await axios.post(`/gemini/question`, { question });
       setData(res.data);
-
-      console.log(data);
-      setResponse(data.response || "Resposta não encontrada."); // Verifica a resposta
-
-      setLoading(false);
+      setResponse(res.data.response || "Resposta não encontrada."); // Atualiza a resposta atual
       setSend(true);
     } catch (error) {
       console.error(error);
+      setError("Erro ao buscar a resposta. Tente novamente.");
       setSend(false);
-      setError("Erro ao buscar a resposta. Tente novamente."); // Mensagem de erro mais amigável
     } finally {
-      setLoading(false); // Finaliza o carregamento
+      setLoading(false);
     }
   };
 
   const fetchSend = async () => {
-    setError(""); // Limpa mensagens de erro anteriores
+    setError("");
     try {
       const ttsResponse = await axios.post(`/nao/ask`, { response: data.response, robot_ip: ipnao });
       console.log(ttsResponse);
     } catch (error) {
       console.error(error);
-      setError("Erro ao enviar a resposta. Tente novamente."); // Mensagem de erro mais amigável
+      setError("Erro ao enviar a resposta. Tente novamente.");
     } finally {
-      setLoading(false); // Finaliza o carregamento
+      setLoading(false);
+      setResponse(""); // Limpa a resposta após o envio
+      setSend(false);
+      setQuestion(""); // Limpa a pergunta
     }
   };
 
