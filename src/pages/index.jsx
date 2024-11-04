@@ -41,9 +41,9 @@ export default function App() {
       setError("Erro ao enviar a resposta. Tente novamente.");
     } finally {
       setLoading(false);
-      setResponse(""); // Limpa a resposta após o envio
-      setSend(false);
-      setQuestion(""); // Limpa a pergunta
+      // setResponse(""); // Limpa a resposta após o envio
+      // setSend(false);
+      // setQuestion(""); // Limpa a pergunta
     }
   };
 
